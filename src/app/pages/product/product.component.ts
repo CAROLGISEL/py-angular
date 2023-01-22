@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
+import { OnInit,Component } from '@angular/core';
+import { ProductModel } from 'src/app/entities/product.model';
 import { ProductHttpService } from '../../services/product-http.service';
 
 @Component({
@@ -8,59 +10,54 @@ import { ProductHttpService } from '../../services/product-http.service';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-
-  constructor(private productHttp:ProductHtppService) { }
+  products: ProductModel[] = [];
+  constructor(private productHttp:ProductHttpService) { }
+  data = {
+    title: 'Computadoras gratis!',
+    price: 10,
+    description: 'Intel: Core i3,i5,i7,i9 / Carol',
+    images: [
+      'https://cloudfront-us-east-1.images.arcpublishing.com/infobae/XSTNQA7FMBGMHJT5BDADJSLOQY.jpg',
+    ],
+    categoryId: 1,
+  };
 
   ngOnInit(): void {
     //this.getProducts();
     //this.getProduct();
     //this.createProduct();
-    //this.updateProduct();
-    //this.deleteProduct();
+    this.updateProduct(236);
+    //this.deleteProduct(235);
   }
-  getProducts(){
-    const url = 'https://api.escuelajs.co/api/v1/products'; 
-    const response = this.httpClient.get(url).subscribe
-    (response=> {console.log(response);
+  async getProducts(){
+    const response = this.productHttp.getAll().subscribe((response) => {
+      this.products = response;
+      console.log(response);
     });
   }
-  getProduct(){
-    const response = this.httpClient.get('api.escuelajs.co/api/v1/products/8').subscribe
-    (response=> {console.log(response);
+  getProduct() {
+    const response = this.productHttp.getOne(8).subscribe((response) => {
+      console.log(response);
     });
   }
-  createProduct(){
-    const data ={
-      title: 'Libros',
-      price: 15,
-      description: 'Utiles escolares / Jair Delgado',
-      images:["https://api.lorem.space/image?w=640&h=480&r=3575"],
-      categoryId: 1
-    }
-     const url = 'https://api.escuelajs.co/api/v1/products';
-    this.httpClient.post(url,data).subscribe
-    (response=> {console.log(response);
-    });
+  createProduct() {
+    const response = this.productHttp
+      .store(this.data)
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
-
-  updateProduct(){
-    const data ={
-      title: 'camisas polo',
-      price: 20,
-      description: 'Camisa de vestir / Jair Delgado',
-      images:["https://api.lorem.space/image?w=640&h=480&r=3575"],
-      categoryId: 1
-    }
-     const url = 'https://api.escuelajs.co/api/v1/products/282';
-    this.httpClient.put(url,data).subscribe
-    (response=> {console.log(response);
-    });
+  updateProduct(id:number) {
+    const response = this.productHttp
+      .update(id,this.data)
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
-
-  deleteProduct(){
-     const url = 'https://api.escuelajs.co/api/v1/products/282';
-    this.httpClient.delete(url).subscribe
-    (response=> {console.log(response);
+  deleteProduct(id: number) {
+    const response = this.productHttp.destroy(id).subscribe((response) => {
+      this.products = this.products.filter(product => product.id != id)
+      console.log(response);
     });
   }
 }

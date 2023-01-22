@@ -1,49 +1,40 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
+import { map, Observable } from "rxjs";
+import { CreateProductModel, ProductModel, updateProductModel } from "../entities/product.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductHttpService {
-
+  readonly Api_url = 'https://api.escuelajs.co/api/v1/products';
   constructor(private httpClient:HttpClient) { }
 
-  getProducts(){
-    const url = 'https://api.escuelajs.co/api/v1/products'; 
-    const response = this.httpClient.get(url).subscribe
-    (response=> {console.log(response);
-    });
+  getAll(): Observable<ProductModel[]> {
+    const url = `${this.Api_url}`;
+    const response = this.httpClient.get<ProductModel[]>(url);
+    return response;
   }
-  getProduct(){
-    const response = this.httpClient.get('api.escuelajs.co/api/v1/products/8').subscribe
-    (response=> {console.log(response);
-    });
+  store(producto: CreateProductModel):Observable<CreateProductModel>{
+    const url = `${this.Api_url}`;
+    const response = this.httpClient.post<CreateProductModel>(url, producto);
+    return response;
   }
-  createProduct(){
-    const data ={
-      title: 'Libros',
-      price: 15,
-      description: 'Utiles escolares / Jair Delgado',
-      images:["https://api.lorem.space/image?w=640&h=480&r=3575"],
-      categoryId: 1
-    }
-     const url = 'https://api.escuelajs.co/api/v1/products';
-    this.httpClient.post(url,data).subscribe
-    (response=> {console.log(response);
-    });
+  update(id: ProductModel['id'], producto: updateProductModel):Observable<updateProductModel> {
+    const url = `${this.Api_url}/${id}`;
+    const response = this.httpClient.put<updateProductModel>(url, producto);
+    return response;
   }
-
-  updateProduct(){
-    const data ={
-      title: 'camisas polo',
-      price: 20,
-      description: 'Camisa de vestir / Jair Delgado',
-      images:["https://api.lorem.space/image?w=640&h=480&r=3575"],
-      categoryId: 1
-    }
-     const url = 'https://api.escuelajs.co/api/v1/products/282';
-    this.httpClient.put(url,data).subscribe
-    (response=> {console.log(response);
-    }); 
+  getOne(id: ProductModel['id']): Observable<ProductModel> {
+    const url = `${this.Api_url}/${id}`;
+    const response = this.httpClient.get<ProductModel>(url);
+    return response;
+  }
+  destroy(id: ProductModel['id']): Observable<boolean> {
+    const url = `${this.Api_url}/${id}`;
+    const response = this.httpClient.delete<any>(url).pipe(map((response:{rta: boolean})=>{
+      return response.rta
+    }));
+    return response;
   }
 }

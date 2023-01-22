@@ -1,2 +1,48 @@
 <p>product works!</p>
 <h1>Carolina Bonilla</h1>
+
+<!--<div class="card text-center">
+  <div class="card-body">
+    <h4 class="card-title">Producto:</h4>
+    <div class="mb-3">
+      <label for="productTitle" class="form-label">Titulo:</label>
+      <input type="text" [value]="{{selectedProduct.title}}" name="productTitle" id="productTitle" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="productPrice" class="form-label">Precio:</label>
+        <input type="number" [value]="{{selectedProduct.price}}" name="productPrice" id="productPrice" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="productDescription" class="form-label">Descripción:</label>
+        <input type="text" [value]="{{selectedProduct.description}}" name="productDescription" id="productDescription" class="form-control">
+      </div>
+  </div>
+</div>
+<hr>
+<div class="m-3 table-responsive-lg">
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Imágenes</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of productList">
+                <td scope="row">{{product.title}}</td>
+                <td scope="row"> <img src="{{product.images}}" height="200px" width="150px"></td>
+                <td>{{product.description}}</td>
+                <td>{{product.category.name}}</td>
+                <td class="fw-semibold">{{product.price}}</td>
+                <td><button class="btn btn-danger me-1" (click)="deleteProduct(product.id)">Eliminar</button>
+                    <a routerLink="[]" class="btn btn-success me-1" (click)="updateProduct(product)">Actualizar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>-->
+
